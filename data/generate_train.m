@@ -1,6 +1,6 @@
 clear;close all;
 
-folder = 'path/to/train/folder';
+folder = '../../HW4/training_hr_images';
 
 savepath = 'train.h5';
 size_input = 41;
@@ -21,8 +21,8 @@ margain = 0;
 
 %% generate data
 filepaths = [];
-filepaths = [filepaths; dir(fullfile(folder, '*.jpg'))];
-filepaths = [filepaths; dir(fullfile(folder, '*.bmp'))];
+filepaths = [filepaths; dir(fullfile(folder, '*.png'))];
+//filepaths = [filepaths; dir(fullfile(folder, '*.bmp'))];
 
 for i = 1 : length(filepaths)
     for flip = 1: 3

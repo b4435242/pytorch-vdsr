@@ -1,10 +1,10 @@
 clear;close all;
 %% settings
-folder = 'Set5';
+folder = '../../HW4/testing_lr_images';
 
 %% generate data
 filepaths = [];
-filepaths = [filepaths; dir(fullfile(folder, '*.bmp'))];
+filepaths = [filepaths; dir(fullfile(folder, '*.png'))];
 
 scale = [2, 3, 4];
 
