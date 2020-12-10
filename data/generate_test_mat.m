@@ -6,7 +6,7 @@ folder = '../../HW4/training_hr_images';
 filepaths = [];
 filepaths = [filepaths; dir(fullfile(folder, '*.png'))];
 
-scale = [2, 3, 4];
+scale = [3];
 
 for i = 1 : length(filepaths)
     im_gt = imread(fullfile(folder,filepaths(i).name));
@@ -22,7 +22,7 @@ for i = 1 : length(filepaths)
         im_b_y = im_b_ycbcr(:,:,1) * 255.0;
         im_b = ycbcr2rgb(im_b_ycbcr) * 255.0;
         last = length(filepaths(i).name)-4;
-        filename = sprintf('TrainingSet_mat/%s_x%s.mat',filepaths(i).name(1 : last),num2str(scale(s)));
+        filename = sprintf('../Training_mat/%s_x%s.mat',filepaths(i).name(1 : last),num2str(scale(s)));
         save(filename, 'im_gt_y', 'im_b_y', 'im_gt', 'im_b', 'im_l_ycbcr', 'im_l_y', 'im_l');
     end
 end
