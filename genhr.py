@@ -26,7 +26,7 @@ def main():
 	test_dir = 'HW4/testing_lr_images'
 	imgnames = os.listdir(test_dir)
 
-	for imname in imgnames:
+	for imgame in imgnames:
 		# Load the low-resolution image 
 		imgpath = os.path.join(test_dir, imgname)
 		im_b = Image.open(imgpath).convert("RGB")
