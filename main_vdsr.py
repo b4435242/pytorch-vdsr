@@ -108,14 +108,18 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
             input = input.cuda()
             target = target.cuda()
 
-        loss = criterion(model(input), target)
+        output = model(input)
+        loss = criterion(output, target)
         optimizer.zero_grad()
         loss.backward() 
         nn.utils.clip_grad_norm(model.parameters(),opt.clip) 
         optimizer.step()
 
+        batch_psnr = psnr(output, target)
+
+
         if iteration%100 == 0:
-            print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item()))
+            print("===> Epoch[{}]({}/{}): Loss: {:.10f} PSNR: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item(), batch_psnr))
 
 def save_checkpoint(model, epoch):
     model_out_path = "checkpoint/" + "model_epoch_{}.pth".format(epoch)
@@ -126,6 +130,23 @@ def save_checkpoint(model, epoch):
     torch.save(state, model_out_path)
 
     print("Checkpoint saved to {}".format(model_out_path))
+
+def psnr(label, outputs, max_val=1.):
+    """
+    Compute Peak Signal to Noise Ratio (the higher the better).
+    PSNR = 20 * log10(MAXp) - 10 * log10(MSE).
+    https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio#Definition
+    First we need to convert torch tensors to NumPy operable.
+    """
+    label = label.cuda().detach().numpy()
+    outputs = outputs.cuda().detach().numpy()
+    img_diff = outputs - label
+    rmse = math.sqrt(np.mean((img_diff) ** 2))
+    if rmse == 0:
+        return 100
+    else:
+        PSNR = 20 * math.log10(max_val / rmse)
+        return PSNR
 
 if __name__ == "__main__":
     main()
