@@ -32,7 +32,7 @@ if cuda:
 
 model = torch.load(opt.model, map_location=lambda storage, loc: storage)["model"]
 
-scales = [2,3,4]
+scales = [3]
 
 image_list = glob.glob(opt.dataset+"_mat/*.*") 
 
