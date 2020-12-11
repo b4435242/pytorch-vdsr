@@ -60,7 +60,10 @@ def main():
 		# Colorize the grey-level image and convert into RGB mode
 		im_h = colorize(im_h_y, im_b_ycbcr)
 
-		plt.imsave("predicted_results/"+imgname, im_h)
+		save_dir = 'predicted_results'
+		if os.path.isdir(save_dir):
+			os.makedirs(save_dir)
+		plt.imsave(os.path.join(save_dir, imgname), im_h)
 
 if __name__ == "__main__":
 	main()
