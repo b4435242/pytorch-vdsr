@@ -63,7 +63,7 @@ def main():
 		save_dir = 'predicted_results'
 		if not os.path.isdir(save_dir):
 			os.makedirs(save_dir)
-		plt.imsave(os.path.join(save_dir, imgname), im_h)
+		im_h.save(os.path.join(save_dir, imgname))
 
 if __name__ == "__main__":
 	main()
