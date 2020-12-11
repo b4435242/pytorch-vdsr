@@ -60,7 +60,7 @@ def main():
 		# Colorize the grey-level image and convert into RGB mode
 		im_h = colorize(im_h_y, im_b_ycbcr)
 
-		save_dir = 'predicted_results'
+		save_dir = '/content/drive/MyDrive/Colab Notebooks/HW4/predicted_results'
 		if not os.path.isdir(save_dir):
 			os.makedirs(save_dir)
 		im_h.save(os.path.join(save_dir, imgname))
