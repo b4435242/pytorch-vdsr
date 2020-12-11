@@ -21,7 +21,7 @@ def colorize(y, ycbcr):
 
 def main():
 	# Load the pretrained model
-	model = torch.load("model/model_epoch_50.pth")["model"]
+	model = torch.load("checkpoint/model_epoch_50.pth")["model"]
 
 	test_dir = 'HW4/testing_lr_images'
 	imgnames = os.listdir(test_dir)
