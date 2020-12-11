@@ -61,7 +61,7 @@ def main():
 		im_h = colorize(im_h_y, im_b_ycbcr)
 
 		save_dir = 'predicted_results'
-		if os.path.isdir(save_dir):
+		if not os.path.isdir(save_dir):
 			os.makedirs(save_dir)
 		plt.imsave(os.path.join(save_dir, imgname), im_h)
 
