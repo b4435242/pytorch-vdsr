@@ -46,7 +46,8 @@ def main():
     cudnn.benchmark = True
 
     print("===> Loading datasets")
-    train_set = DatasetFromHdf5("HW4/train.h5")
+    #train_set = DatasetFromHdf5("HW4/train.h5")
+    train_set = DatasetFromHdf5("pytorch-vdsr/data/train.h5")
     training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
 
     print("===> Building model")
