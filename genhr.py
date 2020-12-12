@@ -30,6 +30,8 @@ def main():
 		# Load the low-resolution image 
 		imgpath = os.path.join(test_dir, imgname)
 		im_b = Image.open(imgpath).convert("RGB")
+		w, h = im_b.size
+		im_b = im_b.resize((3*w, 3*h))
 		# Convert the images into YCbCr mode and extraction the Y channel (for PSNR calculation)
 		im_b_ycbcr = np.array(im_b.convert("YCbCr"))
 		im_b_y = im_b_ycbcr[:,:,0].astype(float)
