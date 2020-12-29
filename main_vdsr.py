@@ -123,10 +123,10 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
             print("===> Epoch[{}]({}/{}): Loss: {:.10f} PSNR: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.item(), batch_psnr))
 
 def save_checkpoint(model, epoch):
-    model_out_path = "checkpoint/" + "model_epoch_{}.pth".format(epoch)
+    model_out_path = "model/" + "model_epoch_{}.pth".format(epoch)
     state = {"epoch": epoch ,"model": model}
-    if not os.path.exists("checkpoint/"):
-        os.makedirs("checkpoint/")
+    if not os.path.exists("model/"):
+        os.makedirs("model/")
 
     torch.save(state, model_out_path)
 
