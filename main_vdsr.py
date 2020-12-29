@@ -47,9 +47,21 @@ def main():
     cudnn.benchmark = True
 
     print("===> Loading datasets")
-    train_set = DatasetFromHdf5("HW4/train.h5")
+    train_set = [DatasetFromHdf5("HW4/train_1_2.h5"), \
+                DatasetFromHdf5("HW4/train_1_3.h5"), \
+                DatasetFromHdf5("HW4/train_1_4.h5"), \
+                DatasetFromHdf5("HW4/train_75.h5"), \
+                DatasetFromHdf5("HW4/train_5.h5")]
+
     #train_set = DatasetFromHdf5("pytorch-vdsr/data/train.h5")
-    training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
+    training_data_loader = DataLoader(ConcatDataset(
+                 datasets.ImageFolder(train_set[0]),
+                 datasets.ImageFolder(train_set[1]),
+                 datasets.ImageFolder(train_set[2]),
+                 datasets.ImageFolder(train_set[3]),
+                 datasets.ImageFolder(train_set[4])
+             ), 
+             num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
 
     print("===> Building model")
     model = Net()
@@ -148,6 +160,16 @@ def psnr(label, outputs, max_val=1.):
     else:
         PSNR = 20 * math.log10(max_val / rmse)
         return PSNR
+
+class ConcatDataset(torch.utils.data.Dataset):
+    def __init__(self, *datasets):
+        self.datasets = datasets
+
+    def __getitem__(self, i):
+        return tuple(d[i] for d in self.datasets)
+
+    def __len__(self):
+        return min(len(d) for d in self.datasets)
 
 if __name__ == "__main__":
     main()
