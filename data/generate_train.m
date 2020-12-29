@@ -1,6 +1,6 @@
 clear;close all;
 
-folder = 'HW4/training_hr_images';
+folder = '../../HW4/training_hr_images';
 
 savepath = 'train.h5';
 size_input = 41;
@@ -10,7 +10,7 @@ stride = 41;
 %% scale factors
 scale = [2,3,4];
 %% downsizing
-downsizes = [1,0.7,0.5];
+downsizes = [1];
 
 %% initialization
 data = zeros(size_input, size_input, 1, 1);

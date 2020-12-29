@@ -37,4 +37,8 @@ class Net(nn.Module):
         out = self.output(out)
         out = torch.add(out,residual)
         return out
+
+
+
+        
  

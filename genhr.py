@@ -6,6 +6,7 @@ import numpy as np
 import time, math
 import matplotlib.pyplot as plt
 import os
+import argparse
 #%matplotlib inline
 
 
@@ -20,15 +21,26 @@ def colorize(y, ycbcr):
     return img
 
 def main():
-	# Load the pretrained model
-	model = torch.load("checkpoint/model_epoch_50.pth")["model"]
+	parser = argparse.ArgumentParser(description="PyTorch EDSR Test")
+	parser.add_argument("--cuda", action="store_true", help="use cuda?")
+	parser.add_argument("--model", default="model/model_epoch_500.pth", type=str, help="model path")
+	parser.add_argument("--dataset", default="HW4/testing_lr_images", type=str, help="image dataset")
+	parser.add_argument("--scale", default=4, type=int, help="scale factor, Default: 4")
 
-	test_dir = 'HW4/testing_lr_images'
-	imgnames = os.listdir(test_dir)
+	opt = parser.parse_args()
+	cuda = opt.cuda
+
+	if cuda and not torch.cuda.is_available():
+		raise Exception("No GPU found, please run without --cuda")
+
+	# Load the pretrained model
+	model = torch.load(opt.model)["model"]
+
+	imgnames = os.listdir(opt.dataset)
 
 	for imgname in imgnames:
 		# Load the low-resolution image 
-		imgpath = os.path.join(test_dir, imgname)
+		imgpath = os.path.join(opt.dataset, imgname)
 		im_b = Image.open(imgpath).convert("RGB")
 		w, h = im_b.size
 		im_b = im_b.resize((3*w, 3*h))
