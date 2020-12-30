@@ -47,11 +47,7 @@ def main():
     cudnn.benchmark = True
 
     print("===> Loading datasets")
-    train_set = [DatasetFromHdf5("HW4/train_1_2.h5"), \
-                DatasetFromHdf5("HW4/train_1_3.h5"), \
-                DatasetFromHdf5("HW4/train_1_4.h5"), \
-                DatasetFromHdf5("HW4/train_75.h5"), \
-                DatasetFromHdf5("HW4/train_5.h5")]
+    train_set = [DatasetFromHdf5("HW4/train_1_2.h5"), DatasetFromHdf5("HW4/train_1_3.h5"), DatasetFromHdf5("HW4/train_1_4.h5"), DatasetFromHdf5("HW4/train_75.h5"), DatasetFromHdf5("HW4/train_5.h5")]
 
     #train_set = DatasetFromHdf5("pytorch-vdsr/data/train.h5")
     training_data_loader = DataLoader(ConcatDataset(
