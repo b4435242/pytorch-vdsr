@@ -56,7 +56,7 @@ def main():
     training_data_loader = DataLoader(
                 #ConcatDataset( #train_set[0], train_set[1], train_set[2], train_set[3], train_set[4]
                 #    train_set1, train_set2), 
-             train_set,
+             dataset=train_set,
              num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
 
     print("===> Building model")
