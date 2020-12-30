@@ -51,11 +51,7 @@ def main():
 
     #train_set = DatasetFromHdf5("pytorch-vdsr/data/train.h5")
     training_data_loader = DataLoader(ConcatDataset(
-                 datasets.ImageFolder(train_set[0]),
-                 datasets.ImageFolder(train_set[1]),
-                 datasets.ImageFolder(train_set[2]),
-                 datasets.ImageFolder(train_set[3]),
-                 datasets.ImageFolder(train_set[4])
+                 train_set[0], train_set[1], train_set[2], train_set[3], train_set[4]
              ), 
              num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
 
