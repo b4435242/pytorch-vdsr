@@ -111,7 +111,6 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
     model.train()
 
     for iteration, batch in enumerate(training_data_loader, 1):
-        print(batch)
         input, target = Variable(batch[0]), Variable(batch[1], requires_grad=False)
 
         if opt.cuda:
