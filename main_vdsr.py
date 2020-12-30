@@ -52,7 +52,7 @@ def main():
     train_set2 = DatasetFromHdf5("HW4/train_1_3.h5")
 
 
-    train_set = DatasetFromHdf5("pytorch-vdsr/data/train_5.h5")
+    train_set = DatasetFromHdf5("HW4/train_5.h5")
     training_data_loader = DataLoader(
                 #ConcatDataset( #train_set[0], train_set[1], train_set[2], train_set[3], train_set[4]
                 #    train_set1, train_set2), 
