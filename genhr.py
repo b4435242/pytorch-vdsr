@@ -47,17 +47,15 @@ def main():
 		img = Image.open(imgpath)
 		img = img.convert('YCbCr')
 		y, cb, cr = img.split()
-		y = y.resize((y.size[0] * self.scale_factor, y.size[1] * self.scale_factor), Image.BICUBIC)
+		y = y.resize((y.size[0] * scale_factor, y.size[1] * scale_factor), Image.BICUBIC)
 
 		input = Variable(ToTensor()(y)).view(1, -1, y.size[1], y.size[0])
-		if self.gpu_mode:
-			input = input.cuda()
+		input = input.cuda()
 
-		self.model.eval()
-		recon_img = self.model(input)
+		recon_img = model(input)
 
 		# save result images
-		utils.save_img(recon_img.cpu().data, 1, save_dir=self.save_dir)
+		#utils.save_img(recon_img.cpu().data, 1, save_dir=self.save_dir)
 
 		out = recon_img.cpu()
 		out_img_y = out.data[0]
