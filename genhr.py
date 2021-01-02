@@ -44,31 +44,31 @@ def main():
 		# Load the low-resolution image 
 		imgpath = os.path.join(opt.dataset, imgname)
 		# load data
-        img = Image.open(imgpath)
-        img = img.convert('YCbCr')
-        y, cb, cr = img.split()
-        y = y.resize((y.size[0] * self.scale_factor, y.size[1] * self.scale_factor), Image.BICUBIC)
+		img = Image.open(imgpath)
+		img = img.convert('YCbCr')
+		y, cb, cr = img.split()
+		y = y.resize((y.size[0] * self.scale_factor, y.size[1] * self.scale_factor), Image.BICUBIC)
 
-        input = Variable(ToTensor()(y)).view(1, -1, y.size[1], y.size[0])
-        if self.gpu_mode:
-            input = input.cuda()
+		input = Variable(ToTensor()(y)).view(1, -1, y.size[1], y.size[0])
+		if self.gpu_mode:
+			input = input.cuda()
 
-        self.model.eval()
-        recon_img = self.model(input)
+		self.model.eval()
+		recon_img = self.model(input)
 
-        # save result images
-        utils.save_img(recon_img.cpu().data, 1, save_dir=self.save_dir)
+		# save result images
+		utils.save_img(recon_img.cpu().data, 1, save_dir=self.save_dir)
 
-        out = recon_img.cpu()
-        out_img_y = out.data[0]
-        out_img_y = (((out_img_y - out_img_y.min()) * 255) / (out_img_y.max() - out_img_y.min())).numpy()
-        # out_img_y *= 255.0
-        # out_img_y = out_img_y.clip(0, 255)
-        out_img_y = Image.fromarray(np.uint8(out_img_y[0]), mode='L')
+		out = recon_img.cpu()
+		out_img_y = out.data[0]
+		out_img_y = (((out_img_y - out_img_y.min()) * 255) / (out_img_y.max() - out_img_y.min())).numpy()
+		# out_img_y *= 255.0
+		# out_img_y = out_img_y.clip(0, 255)
+		out_img_y = Image.fromarray(np.uint8(out_img_y[0]), mode='L')
 
-        out_img_cb = cb.resize(out_img_y.size, Image.BICUBIC)
-        out_img_cr = cr.resize(out_img_y.size, Image.BICUBIC)
-        out_img = Image.merge('YCbCr', [out_img_y, out_img_cb, out_img_cr]).convert('RGB')
+		out_img_cb = cb.resize(out_img_y.size, Image.BICUBIC)
+		out_img_cr = cr.resize(out_img_y.size, Image.BICUBIC)
+		out_img = Image.merge('YCbCr', [out_img_y, out_img_cb, out_img_cr]).convert('RGB')
 
 		'''im_b = Image.open(imgpath).convert("RGB")
 		# Convert the images into YCbCr mode and extraction the Y channel (for PSNR calculation)
