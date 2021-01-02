@@ -23,7 +23,7 @@ def colorize(y, ycbcr):
 def main():
 	parser = argparse.ArgumentParser(description="PyTorch EDSR Test")
 	parser.add_argument("--cuda", action="store_true", help="use cuda?")
-	parser.add_argument("--model", default="/content/drive/MyDrive/Colab Notebooks/HW4/model/model_epoch_25.pth", type=str, help="model path")
+	parser.add_argument("--model", default="/content/drive/MyDrive/Colab Notebooks/HW4/model/model_epoch_20.pth", type=str, help="model path")
 	parser.add_argument("--dataset", default="HW4/testing_lr_images", type=str, help="image dataset")
 
 	opt = parser.parse_args()
