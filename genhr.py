@@ -25,9 +25,12 @@ def main():
 	parser.add_argument("--cuda", action="store_true", help="use cuda?")
 	parser.add_argument("--model", default="/content/drive/MyDrive/Colab Notebooks/HW4/model/model_epoch_20.pth", type=str, help="model path")
 	parser.add_argument("--dataset", default="HW4/testing_lr_images", type=str, help="image dataset")
+	parser.add_argument("--scale_factor", default="3", type=int, help="scale factor")
+
 
 	opt = parser.parse_args()
 	cuda = opt.cuda
+	scale_factor = opt.scale_factor
 
 	if cuda and not torch.cuda.is_available():
 		raise Exception("No GPU found, please run without --cuda")
@@ -44,6 +47,8 @@ def main():
 		# Convert the images into YCbCr mode and extraction the Y channel (for PSNR calculation)
 		im_b_ycbcr = np.array(im_b.convert("YCbCr"))
 		im_b_y = im_b_ycbcr[:,:,0].astype(float)
+		im_b_y = im_b_y.resize((im_b_y.shape[0] * scale_factor, im_b_y.shape[1] * scale_factor), Image.BICUBIC)
+
 
 		# Prepare for the input, a pytorch tensor
 		im_input = im_b_y/255.
@@ -69,6 +74,8 @@ def main():
 		im_h_y = im_h_y[0,:,:]
 
 		# Colorize the grey-level image and convert into RGB mode
+		im_b_ycbcr[:,:,1] = im_b_ycbcr[:,:,1].resize((im_b_y.shape[0] * scale_factor, im_b_y.shape[1] * scale_factor), Image.BICUBIC)
+		im_b_ycbcr[:,:,2] = im_b_ycbcr[:,:,2].resize((im_b_y.shape[0] * scale_factor, im_b_y.shape[1] * scale_factor), Image.BICUBIC)
 		im_h = colorize(im_h_y, im_b_ycbcr)
 		#w, h = im_h.size
 		#im_h = im_h.resize((3*w, 3*h))
