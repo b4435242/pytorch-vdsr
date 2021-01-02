@@ -47,7 +47,7 @@ def main():
 		# Convert the images into YCbCr mode and extraction the Y channel (for PSNR calculation)
 		im_b_ycbcr = np.array(im_b.convert("YCbCr"))
 		im_b_y = im_b_ycbcr[:,:,0].astype(float)
-		print(im_b_y.shape)
+		print(im_b_y.shape,im_b_y.shape[0], im_b_y.shape[1], scale_factor)
 		im_b_y = im_b_y.resize((im_b_y.shape[0] * scale_factor, im_b_y.shape[1] * scale_factor), Image.BICUBIC)
 
 
