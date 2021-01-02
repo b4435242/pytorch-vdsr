@@ -63,9 +63,6 @@ def main():
 		# Get the output image
 		out = out.cpu()
 		im_h_y = out.data[0].numpy().astype(np.float32)
-		w, h = im_h_y.size
-		im_h_y = im_h_y.resize((3*w, 3*h))
-
 		im_h_y = im_h_y * 255.
 		im_h_y[im_h_y < 0] = 0
 		im_h_y[im_h_y > 255.] = 255.
@@ -73,6 +70,8 @@ def main():
 
 		# Colorize the grey-level image and convert into RGB mode
 		im_h = colorize(im_h_y, im_b_ycbcr)
+		w, h = im_h.size
+		im_h = im_h.resize((3*w, 3*h))
 
 		save_dir = '/content/drive/MyDrive/Colab Notebooks/HW4/predicted_results'
 		if not os.path.isdir(save_dir):
