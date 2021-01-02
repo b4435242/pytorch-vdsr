@@ -41,8 +41,6 @@ def main():
 		# Load the low-resolution image 
 		imgpath = os.path.join(opt.dataset, imgname)
 		im_b = Image.open(imgpath).convert("RGB")
-		w, h = im_b.size
-		im_b = im_b.resize((3*w, 3*h))
 		# Convert the images into YCbCr mode and extraction the Y channel (for PSNR calculation)
 		im_b_ycbcr = np.array(im_b.convert("YCbCr"))
 		im_b_y = im_b_ycbcr[:,:,0].astype(float)
@@ -65,6 +63,9 @@ def main():
 		# Get the output image
 		out = out.cpu()
 		im_h_y = out.data[0].numpy().astype(np.float32)
+		w, h = im_h_y.size
+		im_h_y = im_h_y.resize((3*w, 3*h))
+
 		im_h_y = im_h_y * 255.
 		im_h_y[im_h_y < 0] = 0
 		im_h_y[im_h_y > 255.] = 255.
