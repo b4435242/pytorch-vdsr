@@ -43,7 +43,34 @@ def main():
 	for imgname in imgnames:
 		# Load the low-resolution image 
 		imgpath = os.path.join(opt.dataset, imgname)
-		im_b = Image.open(imgpath).convert("RGB")
+		# load data
+        img = Image.open(imgpath)
+        img = img.convert('YCbCr')
+        y, cb, cr = img.split()
+        y = y.resize((y.size[0] * self.scale_factor, y.size[1] * self.scale_factor), Image.BICUBIC)
+
+        input = Variable(ToTensor()(y)).view(1, -1, y.size[1], y.size[0])
+        if self.gpu_mode:
+            input = input.cuda()
+
+        self.model.eval()
+        recon_img = self.model(input)
+
+        # save result images
+        utils.save_img(recon_img.cpu().data, 1, save_dir=self.save_dir)
+
+        out = recon_img.cpu()
+        out_img_y = out.data[0]
+        out_img_y = (((out_img_y - out_img_y.min()) * 255) / (out_img_y.max() - out_img_y.min())).numpy()
+        # out_img_y *= 255.0
+        # out_img_y = out_img_y.clip(0, 255)
+        out_img_y = Image.fromarray(np.uint8(out_img_y[0]), mode='L')
+
+        out_img_cb = cb.resize(out_img_y.size, Image.BICUBIC)
+        out_img_cr = cr.resize(out_img_y.size, Image.BICUBIC)
+        out_img = Image.merge('YCbCr', [out_img_y, out_img_cb, out_img_cr]).convert('RGB')
+
+		'''im_b = Image.open(imgpath).convert("RGB")
 		# Convert the images into YCbCr mode and extraction the Y channel (for PSNR calculation)
 		im_b_ycbcr = np.array(im_b.convert("YCbCr"))
 		im_b_y = im_b_ycbcr[:,:,0].astype(float)
@@ -79,12 +106,12 @@ def main():
 		im_b_ycbcr[:,:,2] = im_b_ycbcr[:,:,2].resize((im_b_y.shape[0] * scale_factor, im_b_y.shape[1] * scale_factor), Image.BICUBIC)
 		im_h = colorize(im_h_y, im_b_ycbcr)
 		#w, h = im_h.size
-		#im_h = im_h.resize((3*w, 3*h))
+		#im_h = im_h.resize((3*w, 3*h))'''
 
-		save_dir = '/content/drive/MyDrive/Colab Notebooks/HW4/predicted_results'
+		save_dir = '/content/drive/MyDrive/Colab Notebooks/HW4/vdsr_results'
 		if not os.path.isdir(save_dir):
 			os.makedirs(save_dir)
-		im_h.save(os.path.join(save_dir, imgname))
+		out_img.save(os.path.join(save_dir, imgname))
 
 if __name__ == "__main__":
 	main()
