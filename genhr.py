@@ -7,6 +7,7 @@ import time, math
 import matplotlib.pyplot as plt
 import os
 import argparse
+from torchvision.transforms import ToTensor
 #%matplotlib inline
 
 
